@@ -1,0 +1,17 @@
+.no-ship {
+  background-color: blue;
+  width: 40px;
+  height: 40px;
+  border: 3px solid black;
+}
+
+.yes-ship {
+  background-color: red;
+  width: 40px;
+  height: 40px;
+  border: 3px solid black;
+}
+
+.row {
+  display: flex;
+}

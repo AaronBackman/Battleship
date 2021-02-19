@@ -1,5 +1,6 @@
 import React from 'react';
 import OptionsWindow from './OptionsWindow.js';
+import PlacementWindow from './PlacementWindow.js';
 
 class Game extends React.Component {
   constructor(props) {
@@ -9,21 +10,30 @@ class Game extends React.Component {
       beginningTurn: 0,
       reset: false,
 
-      boards: {
-        player1Board: [],
-        player2Board: [],
-      },
+      player1Board: [],
+      player2Board: [],
 
-      ships: {
-        player1Ships: [],
-        player2Ships: [],
-      },
+      player1Ships: [],
+      player2Ships: [],
 
       shipCount: [0, 0, 0, 0, 0],
 
       boardSize: 5,
       player1Name: '',
       player2Name: '',
+    };
+  }
+
+  componentDidUpdate() {
+    // initializes the boards
+    if (this.state.gameTurn === 0 && this.state.beginningTurn === 1) {
+      if (this.state.player1Board.length === 0) {
+        this.setState({player1Board: initGameBoard(this.state.boardSize)});
+      }
+
+      if (this.state.player2Board.length === 0) {
+        this.setState({player2Board: initGameBoard(this.state.boardSize)});
+      }
     }
   }
 
@@ -39,6 +49,17 @@ class Game extends React.Component {
       />
     }
 
+    // player 1 places their ships now
+    if (this.state.gameTurn === 0 && this.state.beginningTurn === 1) {
+      return (
+        <PlacementWindow
+          shipCount={this.state.shipCount}
+          board={this.state.player1Board}
+          ships={this.state.player1Ships}
+        />
+      );
+    }
+
     return (
       <div>hello</div>
     );
@@ -47,13 +68,23 @@ class Game extends React.Component {
 
 // makes an initial board as 2d array consisting of default (empty) squares
 function initGameBoard(boardSize) {
-  return Array(boardSize).fill(0).map(x => Array(boardSize).fill(0).map(x => {
-    return {
-      fog: false,
-      shot: false,
-      noShip: true,
+  const board = [];
+
+  for (let i = 0; i < boardSize; i++) {
+    board.push([]);
+
+    for (let j = 0; j < boardSize; j++) {
+      board[i].push(
+        {
+          fog: false,
+          shot: false,
+          noShip: true,
+        }
+      )
     }
-  }));
+  }
+
+  return board;
 }
 
 export default Game;
