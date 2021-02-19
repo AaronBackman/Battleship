@@ -1,0 +1,58 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+}
+
+.player-names-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.player-names-selection {
+  display: flex;
+  margin: 20px;
+}
+
+.player-names-selection > div {
+  margin: 5px;
+}
+
+.board-size-container {
+  display: flex;
+  align-items: center;
+}
+
+.board-size-display {
+  display: flex;
+  margin: 5px;
+}
+
+.board-size-display > div {
+  margin: 5px;
+  font-size: 30px;
+}
+
+.board-size-selection {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 5px;
+}
+
+.board-size-selection > div {
+  margin: 5px;
+  padding: 5px;
+  border-radius: 20px;
+  font-size: 20px;
+
+  background-color: aqua;
+}
+
+.board-size-selection > div:hover {
+  background-color: rgb(43, 216, 216);
+  cursor: pointer;
+}
