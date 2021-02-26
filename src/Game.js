@@ -25,6 +25,7 @@ class Game extends React.Component {
   }
 
   componentDidUpdate() {
+    console.log('update');
     // initializes the boards
     if (this.state.gameTurn === 0 && this.state.beginningTurn === 1) {
       if (this.state.player1Board.length === 0) {
@@ -53,9 +54,11 @@ class Game extends React.Component {
     if (this.state.gameTurn === 0 && this.state.beginningTurn === 1) {
       return (
         <PlacementWindow
+          setState={p => this.setState(p)}
           shipCount={this.state.shipCount}
           board={this.state.player1Board}
           ships={this.state.player1Ships}
+          player={1}
         />
       );
     }
@@ -83,6 +86,9 @@ function initGameBoard(boardSize) {
       )
     }
   }
+
+  console.log('init');
+  console.log(board);
 
   return board;
 }

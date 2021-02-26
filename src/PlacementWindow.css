@@ -15,3 +15,10 @@
 .row {
   display: flex;
 }
+
+.no-ship-selected {
+  background-color: rgb(31, 31, 150);
+  width: 40px;
+  height: 40px;
+  border: 3px solid black;
+}

@@ -1,0 +1,29 @@
+.aircraft-carrier {
+  width: 200px;
+  height: 30px;
+  background-color: brown;
+}
+
+.battleship {
+  width: 160px;
+  height: 30px;
+  background-color: brown;
+}
+
+.cruiser {
+  width: 120px;
+  height: 30px;
+  background-color: brown;
+}
+
+.submarine {
+  width: 120px;
+  height: 30px;
+  background-color: brown;
+}
+
+.destroyer {
+  width: 80px;
+  height: 30px;
+  background-color: brown;
+}

@@ -1,0 +1,34 @@
+.aircraft-carrier-dragged {
+  width: 200px;
+  height: 30px;
+  background-color: brown;
+  opacity: 0.5;
+}
+
+.battleship-dragged {
+  width: 160px;
+  height: 30px;
+  background-color: brown;
+  opacity: 0.5;
+}
+
+.cruiser-dragged {
+  width: 120px;
+  height: 30px;
+  background-color: brown;
+  opacity: 0.5;
+}
+
+.submarine-dragged {
+  width: 120px;
+  height: 30px;
+  background-color: brown;
+  opacity: 0.5;
+}
+
+.destroyer-dragged {
+  width: 80px;
+  height: 30px;
+  background-color: brown;
+  opacity: 0.5;
+}
