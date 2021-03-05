@@ -21,19 +21,30 @@ class Game extends React.Component {
       boardSize: 5,
       player1Name: '',
       player2Name: '',
+
+
+      unplacedShipCount: [],
+      selectedSquares: [],
+      dragInfo: {
+        canBeDropped: false,
+        shipSize: 0,
+        rotation: 0,
+        shipType: -1,
+      }
     };
   }
 
   componentDidUpdate() {
-    console.log('update');
     // initializes the boards
     if (this.state.gameTurn === 0 && this.state.beginningTurn === 1) {
       if (this.state.player1Board.length === 0) {
-        this.setState({player1Board: initGameBoard(this.state.boardSize)});
+        console.log('set board');
+        this.setState({player1Board: initGameBoard(this.state.boardSize), unplacedShipCount: this.state.shipCount});
       }
-
+    } else if (this.state.gameTurn === 0 && this.state.beginningTurn === 2) {
       if (this.state.player2Board.length === 0) {
-        this.setState({player2Board: initGameBoard(this.state.boardSize)});
+        console.log('set board');
+        this.setState({player2Board: initGameBoard(this.state.boardSize), unplacedShipCount: this.state.shipCount});
       }
     }
   }
@@ -55,10 +66,13 @@ class Game extends React.Component {
       return (
         <PlacementWindow
           setState={p => this.setState(p)}
-          shipCount={this.state.shipCount}
           board={this.state.player1Board}
           ships={this.state.player1Ships}
           player={1}
+          unplacedShipCount={this.state.unplacedShipCount}
+          selectedSquares={this.state.selectedSquares}
+          dragInfo={this.state.dragInfo}
+          boardSize={this.state.boardSize}
         />
       );
     }
