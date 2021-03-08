@@ -26,10 +26,14 @@ class Game extends React.Component {
       unplacedShipCount: [],
       selectedSquares: [],
       dragInfo: {
+        isDragged: false,
         canBeDropped: false,
+        showDraggedShip: false,
         shipSize: 0,
         rotation: 0,
         shipType: -1,
+        x: -1,
+        y: -1,
       }
     };
   }

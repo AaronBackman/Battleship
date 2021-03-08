@@ -12,6 +12,11 @@
   border: 3px solid black;
 }
 
+#board {
+  display: flex;
+  flex-direction: column;
+}
+
 .row {
   display: flex;
 }

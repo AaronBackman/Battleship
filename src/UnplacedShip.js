@@ -1,6 +1,9 @@
 import React from 'react';
 import './UnplacedShip.css';
 
+const shipSquareWidth = 40; // pixels
+const shipSquareHeight = 30; // pixels
+
 class UnplacedShip extends React.Component {
   constructor(props) {
     super(props);
@@ -16,7 +19,7 @@ class UnplacedShip extends React.Component {
           <div>
             <div>{shipCount}</div>
             <div>aircraft carrier</div>
-            <div className="aircraft-carrier" onDragStart={handleDragStart(5, shipType)} draggable="true"></div>
+            <div className="aircraft-carrier" onMouseDown={handleDragStart(5, shipType)}></div>
             <div>size: 5 squares</div>
           </div>
         );
@@ -26,7 +29,7 @@ class UnplacedShip extends React.Component {
           <div>
             <div>{shipCount}</div>
             <div>battleship</div>
-            <div className="battleship" onDragStart={handleDragStart(4, shipType)} draggable="true"></div>
+            <div className="battleship" onMouseDown={handleDragStart(4, shipType)}></div>
             <div>size: 4 squares</div>
           </div>
         );
@@ -36,7 +39,7 @@ class UnplacedShip extends React.Component {
           <div>
             <div>{shipCount}</div>
             <div>cruiser</div>
-            <div className="cruiser" onDragStart={handleDragStart(3, shipType)} draggable="true"></div>
+            <div className="cruiser" onMouseDown={handleDragStart(3, shipType)}></div>
             <div>size: 3 squares</div>
           </div>
         );
@@ -46,7 +49,7 @@ class UnplacedShip extends React.Component {
         <div>
           <div>{shipCount}</div>
           <div>submarine</div>
-          <div className="submarine" onDragStart={handleDragStart(3, shipType)} draggable="true"></div>
+          <div className="submarine" onMouseDown={handleDragStart(3, shipType)}></div>
           <div>size: 3 squares</div>
         </div>
       );
@@ -56,7 +59,7 @@ class UnplacedShip extends React.Component {
         <div>
           <div>{shipCount}</div>
           <div>destroyer</div>
-          <div className="destroyer" onDragStart={handleDragStart(2, shipType)} draggable="true"></div>
+          <div className="destroyer" onMouseDown={handleDragStart(2, shipType)}></div>
           <div>size: 2 squares</div>
         </div>
       );
@@ -77,10 +80,14 @@ class UnplacedShip extends React.Component {
 
         setState({
           dragInfo: {
+            isDragged: true,
             canBeDropped: false,
+            showDraggedShip: true,
             shipSize: shipSize,
             rotation: 0,
             shipType: shipType,
+            x: e.clientX - Math.round(shipSize / 2 * shipSquareWidth),
+            y: e.clientY - Math.round(1/2 * shipSquareHeight),
           }
         });
       }

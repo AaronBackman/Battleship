@@ -7,37 +7,42 @@ class DraggedShip extends React.Component {
   }
 
   render() {
-    const {shipSize, dragInfo, setState} = this.props;
+    const {dragInfo, setState} = this.props;
 
-    if (!dragInfo.dragOn) return <div>no drag</div>
+    if (!dragInfo.isDragged || !dragInfo.showDraggedShip) return <div>no drag</div>
 
-    console.log(shipSize);
+    const style = {
+      position: 'absolute',
+      top: dragInfo.y,
+      left: dragInfo.x,
+      transform: `rotate(${dragInfo.rotation}deg)`,
+    }
 
-    switch(shipSize) {
-      case 5:
+    switch(dragInfo.shipType) {
+      case 0:
         // aircraft carrier
         return (
-          <div className="aircraft-carrier-dragged" draggable="true"></div>
+          <div className="aircraft-carrier-dragged" style={style}></div>
         );
-      case 4:
+      case 1:
         // battleship
         return (
-          <div className="battleship-dragged" draggable="true"></div>
-        );
-      case 3:
-        // cruiser
-        return (
-          <div className="cruiser-dragged" draggable="true"></div>
+          <div className="battleship-dragged" style={style}></div>
         );
       case 2:
+        // cruiser
+        return (
+          <div className="cruiser-dragged" style={style}></div>
+        );
+      case 3:
       // submarine
       return (
-        <div className="submarine-dragged" draggable="true"></div>
+        <div className="submarine-dragged" style={style}></div>
       );
-    case 1:
+    case 4:
       // destroyer
       return (
-        <div className="destroyer-dragged" draggable="true"></div>
+        <div className="destroyer-dragged" style={style}></div>
       );
     default:
       console.log('DraggedShip ship something went wrong');
