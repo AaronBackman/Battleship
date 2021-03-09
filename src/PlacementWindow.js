@@ -275,15 +275,39 @@ function calculateSelection(board, dragInfo) {
 
   const selectedSquares = new Array(board.length).fill(0).map(x => Array(board.length).fill(0));
 
-  selectedSquares[y][x] = true;
+  if (board[y][x].noShip) {
+    selectedSquares[y][x] = true;
+  } else {
+    canDrop = false;
+  }
 
 
   if (rotation === 0) {
     let i = 1;
     while (dragInfo.shipSize - center + i <= dragInfo.shipSize) {
-      if (x + i < board.length && board[y][x].noShip) {
+      if (x + i < board.length && board[y][x + i].noShip) {
         selectedSquares[y][x + i] = true;
       } else {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y] && board[y][x + i + 1] && !board[y][x + i + 1].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y] && board[y][x + i - 1] && !board[y][x + i - 1].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y + 1] && board[y + 1][x + i] && !board[y + 1][x + i].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y - 1] && board[y - 1][x + i] && !board[y - 1][x + i].noShip) {
         canDrop = false;
       }
 
@@ -292,9 +316,29 @@ function calculateSelection(board, dragInfo) {
 
     i = 1
     while (dragInfo.shipSize - center - i > 0) {
-      if (x - i >= 0 && board[y][x].noShip) {
+      if (x - i >= 0 && board[y][x - i].noShip) {
         selectedSquares[y][x - i] = true;
       } else {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y] && board[y][x - i + 1] && !board[y][x - i + 1].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y] && board[y][x - i - 1] && !board[y][x - i - 1].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y + 1] && board[y + 1][x - i] && !board[y + 1][x - i].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y - 1] && board[y - 1][x - i] && !board[y - 1][x - i].noShip) {
         canDrop = false;
       }
 
@@ -302,27 +346,69 @@ function calculateSelection(board, dragInfo) {
     }
   } else if (rotation === 90) {
     let i = 1;
-      while (dragInfo.shipSize - center + i <= dragInfo.shipSize) {
-        if (y + i < board.length && board[y][x].noShip) {
-          selectedSquares[y + i][x] = true;
-        } else {
-          canDrop = false;
-        }
-
-        i++;
+    while (dragInfo.shipSize - center + i <= dragInfo.shipSize) {
+      if (y + i < board.length && board[y + i][x].noShip) {
+        selectedSquares[y + i][x] = true;
+      } else {
+        canDrop = false;
       }
 
-      i = 1
-      while (dragInfo.shipSize - center - i > 0) {
-        if (y - i >= 0 && board[y][x].noShip) {
-          selectedSquares[y - i][x] = true;
-        } else {
-          canDrop = false;
-        }
-
-        i++;
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y + i] && board[y + i][x + 1] && !board[y + i][x + 1].noShip) {
+        canDrop = false;
       }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y + i] && board[y + i][x - 1] && !board[y + i][x - 1].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y + i + 1] && board[y + i + 1][x + i] && !board[y + i + 1][x].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y + i - 1] && board[y + i - 1][x + i] && !board[y + i - 1][x].noShip) {
+        canDrop = false;
+      }
+
+      i++;
+    }
+
+    i = 1
+    while (dragInfo.shipSize - center - i > 0) {
+      if (y - i >= 0 && board[y - i][x].noShip) {
+        selectedSquares[y - i][x] = true;
+      } else {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y - i] && board[y - i][x + 1] && !board[y - i][x + 1].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y - i] && board[y - i][x - 1] && !board[y - i][x - 1].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y - i + 1] && board[y - i + 1][x + i] && !board[y - i + 1][x].noShip) {
+        canDrop = false;
+      }
+
+      // adjacent square has a ship -> ship cant be placed
+      if (board[y - i - 1] && board[y - i - 1][x + i] && !board[y - i - 1][x].noShip) {
+        canDrop = false;
+      }
+
+      i++;
+    }
   }
+
+  console.log(canDrop);
 
   return (
     {
