@@ -81,13 +81,14 @@ class UnplacedShip extends React.Component {
         setState({
           dragInfo: {
             isDragged: true,
-            canBeDropped: false,
             showDraggedShip: true,
             shipSize: shipSize,
             rotation: 0,
             shipType: shipType,
             x: e.clientX - Math.round(shipSize / 2 * shipSquareWidth),
             y: e.clientY - Math.round(1/2 * shipSquareHeight),
+            boardSquareX: -1,
+            boardSquareY: -1,
           }
         });
       }

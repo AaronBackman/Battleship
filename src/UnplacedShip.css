@@ -2,28 +2,33 @@
   width: 200px;
   height: 30px;
   background-color: brown;
+  cursor: pointer;
 }
 
 .battleship {
   width: 160px;
   height: 30px;
   background-color: brown;
+  cursor: pointer;
 }
 
 .cruiser {
   width: 120px;
   height: 30px;
   background-color: brown;
+  cursor: pointer;
 }
 
 .submarine {
   width: 120px;
   height: 30px;
   background-color: brown;
+  cursor: pointer;
 }
 
 .destroyer {
   width: 80px;
   height: 30px;
   background-color: brown;
+  cursor: pointer;
 }

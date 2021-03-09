@@ -24,7 +24,6 @@ class Game extends React.Component {
 
 
       unplacedShipCount: [],
-      selectedSquares: [],
       dragInfo: {
         isDragged: false,
         canBeDropped: false,
@@ -34,6 +33,8 @@ class Game extends React.Component {
         shipType: -1,
         x: -1,
         y: -1,
+        boardSquareX: -1,
+        boardSquareY: -1,
       }
     };
   }
@@ -74,7 +75,6 @@ class Game extends React.Component {
           ships={this.state.player1Ships}
           player={1}
           unplacedShipCount={this.state.unplacedShipCount}
-          selectedSquares={this.state.selectedSquares}
           dragInfo={this.state.dragInfo}
           boardSize={this.state.boardSize}
         />

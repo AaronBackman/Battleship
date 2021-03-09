@@ -3,6 +3,7 @@
   width: 40px;
   height: 40px;
   border: 3px solid black;
+  cursor: pointer;
 }
 
 .yes-ship {
@@ -10,9 +11,11 @@
   width: 40px;
   height: 40px;
   border: 3px solid black;
+  cursor: pointer;
 }
 
 #board {
+  margin: 60px;
   display: flex;
   flex-direction: column;
 }
@@ -26,4 +29,5 @@
   width: 40px;
   height: 40px;
   border: 3px solid black;
+  cursor: pointer;
 }
