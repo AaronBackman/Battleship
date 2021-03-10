@@ -9,7 +9,7 @@ class DraggedShip extends React.Component {
   render() {
     const {dragInfo, setState} = this.props;
 
-    if (!dragInfo.isDragged || !dragInfo.showDraggedShip) return <div>no drag</div>
+    if (!dragInfo.isDragged || !dragInfo.showDraggedShip) return <></>
 
     const style = {
       position: 'absolute',

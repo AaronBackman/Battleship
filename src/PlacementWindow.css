@@ -1,21 +1,15 @@
-.no-ship {
-  background-color: blue;
-  width: 40px;
-  height: 40px;
-  border: 3px solid black;
-  cursor: pointer;
-}
+.placement-window {
+  width: 100%;
+  height: 100%;
+  background-image: url("images/us-fleet-wallpaper.jpg");
+  background-size: 100%;
 
-.yes-ship {
-  background-color: red;
-  width: 40px;
-  height: 40px;
-  border: 3px solid black;
-  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }
 
 #board {
-  margin: 60px;
   display: flex;
   flex-direction: column;
 }
@@ -24,10 +18,25 @@
   display: flex;
 }
 
-.no-ship-selected {
-  background-color: rgb(31, 31, 150);
-  width: 40px;
-  height: 40px;
-  border: 3px solid black;
+.ready-button {
+  width: 50px;
+  height: 30px;
+  padding: 30px;
+  background-color: cadetblue;
+  font-size: large;
   cursor: pointer;
+
+  position: absolute;
+  right: 20%;
+  bottom: 0;
+  margin: 50px;
+}
+
+.unplaced-ships-container {
+  background-color: black;
+  color: white;
+}
+
+.ready-button:hover {
+  background-color: rgb(69, 96, 97);
 }

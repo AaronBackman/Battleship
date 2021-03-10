@@ -1,0 +1,155 @@
+.square {
+  background-image: url("images/empty-square.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-center-horizontal {
+  background-image: url("images/ship-center-horizontal.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-center-vertical {
+  background-image: url("images/ship-center-vertical.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-top {
+  background-image: url("images/ship-top.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-bottom {
+  background-image: url("images/ship-bottom.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-left {
+  background-image: url("images/ship-left.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-right {
+  background-image: url("images/ship-right.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+
+
+.ship-part-center-horizontal-green {
+  background-image: url("images/ship-center-horizontal.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid green;
+  cursor: pointer;
+}
+
+.ship-part-center-vertical-green {
+  background-image: url("images/ship-center-vertical.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid green;
+  cursor: pointer;
+}
+
+.ship-part-top-green {
+  background-image: url("images/ship-top.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid green;
+  cursor: pointer;
+}
+
+.ship-part-bottom-green {
+  background-image: url("images/ship-bottom.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid green;
+  cursor: pointer;
+}
+
+.ship-part-left-green {
+  background-image: url("images/ship-left.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid green;
+  cursor: pointer;
+}
+
+.ship-part-right-green {
+  background-image: url("images/ship-right.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid green;
+  cursor: pointer;
+}
+
+
+
+.ship-part-center-horizontal-red {
+  background-image: url("images/ship-center-horizontal.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid red;
+  cursor: pointer;
+}
+
+.ship-part-center-vertical-red {
+  background-image: url("images/ship-center-vertical.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid red;
+  cursor: pointer;
+}
+
+.ship-part-top-red {
+  background-image: url("images/ship-top.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid red;
+  cursor: pointer;
+}
+
+.ship-part-bottom-red {
+  background-image: url("images/ship-bottom.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid red;
+  cursor: pointer;
+}
+
+.ship-part-left-red {
+  background-image: url("images/ship-left.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid red;
+  cursor: pointer;
+}
+
+.ship-part-right-red {
+  background-image: url("images/ship-right.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid red;
+  cursor: pointer;
+}

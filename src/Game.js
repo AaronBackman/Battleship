@@ -81,6 +81,21 @@ class Game extends React.Component {
       );
     }
 
+    // player 2 places their ships now
+    if (this.state.gameTurn === 0 && this.state.beginningTurn === 2) {
+      return (
+        <PlacementWindow
+          setState={p => this.setState(p)}
+          board={this.state.player2Board}
+          ships={this.state.player2Ships}
+          player={2}
+          unplacedShipCount={this.state.unplacedShipCount}
+          dragInfo={this.state.dragInfo}
+          boardSize={this.state.boardSize}
+        />
+      );
+    }
+
     return (
       <div>hello</div>
     );

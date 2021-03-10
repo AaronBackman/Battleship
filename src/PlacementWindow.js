@@ -4,10 +4,11 @@ import UnplacedShip from './UnplacedShip.js';
 import DraggedShip from './DraggedShip.js';
 
 import './PlacementWindow.css';
+import './Squares.css';
 
-const shipSquareWidth = 40; // pixels
-const shipSquareHeight = 30; // pixels
-const boardSquareSize = 46; // pixels
+const shipSquareWidth = 50; // pixels
+const shipSquareHeight = 40; // pixels
+const boardSquareSize = 56; // pixels
 
 let selectedSquares;
 let canBeDropped = false;
@@ -21,6 +22,7 @@ class PlacementWindow extends React.Component {
     this.handleRotation = this.handleRotation.bind(this);
     this.handleDragMove = this.handleDragMove.bind(this);
     this.handleDragLeave = this.handleDragLeave.bind(this);
+    this.handleTurnEnd = this.handleTurnEnd.bind(this);
   }
 
   render() {
@@ -36,27 +38,118 @@ class PlacementWindow extends React.Component {
       const selectionObj = calculateSelection(board, dragInfo);
       selectedSquares = selectionObj.selectedSquares;
       canBeDropped = selectionObj.canBeDropped;
+
     } else {
       selectedSquares = new Array(board.length).fill(0).map(x => Array(board.length).fill(0));
     }
 
     return (
-      <div className="root">
-        <div>hello to placement</div>
+      <div className="placement-window">
         <div id="board">
           {board.map((row, y) => {
             return (<div key={y} className="row">{
               row.map((square, x) => {
-                //console.log(`square x=${x}, y=${y}`);
-                if (board[y] && board[y][x].noShip) {
-                  //console.log(`noship here square x=${x}, y=${y}`);
-                  if (selectedSquares[y] && selectedSquares[y][x]) {
-                    return <div key={x} data-x={x} data-y={y} className="no-ship-selected" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                if (!board[y][x].ship && !selectedSquares[y][x].selected) {
+                  return <div key={x} data-x={x} data-y={y} className="square" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                }
+                else if (selectedSquares[y][x].selected) {
+                  if (canBeDropped) {
+                    if (selectedSquares[y][x].shipCenterPartHorizontal) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-center-horizontal-green" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipCenterPartVertical) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-center-vertical-green" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipTopPart) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-top-green" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipBottomPart) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-bottom-green" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipLeftPart) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-left-green" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipRightPart) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-right-green" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
                   }
-
-                  return <div key={x} data-x={x} data-y={y} className="no-ship" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
-                } else {
-                  return <div key={x} data-x={x} data-y={y} className="yes-ship" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                  else {
+                    if (selectedSquares[y][x].shipCenterPartHorizontal) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-center-horizontal-red" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipCenterPartVertical) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-center-vertical-red" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipTopPart) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-top-red" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipBottomPart) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-bottom-red" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipLeftPart) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-left-red" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                    else if (selectedSquares[y][x].shipRightPart) {
+                      return (
+                        <div key={x} data-x={x} data-y={y} className="ship-part-right-red" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                      );
+                    }
+                  }
+                }
+                
+                else if (board[y][x].ship.hasShip) {
+                  if (board[y][x].ship.shipCenterPartHorizontal) {
+                    return (
+                      <div key={x} data-x={x} data-y={y} className="ship-part-center-horizontal" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                    );
+                  }
+                  else if (board[y][x].ship.shipCenterPartVertical) {
+                    return (
+                      <div key={x} data-x={x} data-y={y} className="ship-part-center-vertical" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                    );
+                  }
+                  else if (board[y][x].ship.shipTopPart) {
+                    return (
+                      <div key={x} data-x={x} data-y={y} className="ship-part-top" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                    );
+                  }
+                  else if (board[y][x].ship.shipBottomPart) {
+                    return (
+                      <div key={x} data-x={x} data-y={y} className="ship-part-bottom" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                    );
+                  }
+                  else if (board[y][x].ship.shipLeftPart) {
+                    return (
+                      <div key={x} data-x={x} data-y={y} className="ship-part-left" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                    );
+                  }
+                  else if (board[y][x].ship.shipRightPart) {
+                    return (
+                      <div key={x} data-x={x} data-y={y} className="ship-part-right" onMouseEnter={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
+                    );
+                  }
                 }
               })
             }</div>);
@@ -64,9 +157,10 @@ class PlacementWindow extends React.Component {
         </div>
 
         <div className="unplaced-ships-container">
-          {this.props.unplacedShipCount.map((shipCount, index) => <UnplacedShip shipCount={shipCount} shipType={index} setState={p => this.props.setState(p)} />)}
+          {this.props.unplacedShipCount.map((shipCount, index) => <UnplacedShip key={index} shipCount={shipCount} shipType={index} setState={p => this.props.setState(p)} />)}
         </div>
         <DraggedShip dragInfo={dragInfo} setState={p => this.props.setState(p)} />
+        <div className="ready-button" onClick={this.handleTurnEnd}>Ready</div>
       </div>
     );
   }
@@ -80,7 +174,6 @@ class PlacementWindow extends React.Component {
     }
 
     if (!dragInfo.showDraggedShip) {
-      console.log('dont show ship');
       return;
     }
 
@@ -96,9 +189,6 @@ class PlacementWindow extends React.Component {
     const boardEndX = boardStartX + boardSize * boardSquareSize;
     const boardEndY = boardStartY + boardSize * boardSquareSize;
 
-    //console.log(board);
-
-    console.log(boardStartX, boardEndX, boardStartY, boardEndY);
 
     let showDraggedShip = true;
 
@@ -123,6 +213,8 @@ class PlacementWindow extends React.Component {
     e.preventDefault();
     const dragInfo = this.props.dragInfo;
 
+    canBeDropped = false;
+
     if (!dragInfo.isDragged) {
       return;
     }
@@ -132,7 +224,6 @@ class PlacementWindow extends React.Component {
     dragInfoCopy.boardSquareX = -1;
     dragInfoCopy.boardSquareY = -1;
 
-    console.log('drag leave');
     this.props.setState({dragInfo: dragInfoCopy});
   }
 
@@ -173,8 +264,6 @@ class PlacementWindow extends React.Component {
     const boardCopy = JSON.parse(JSON.stringify(this.props.board));
     const shipCountClone = JSON.parse(JSON.stringify(this.props.unplacedShipCount));
 
-    console.log('dragend-1');
-
     // ship cant be placed on board, selected squares are reset
     if (!canBeDropped) {
       this.props.setState({
@@ -193,16 +282,16 @@ class PlacementWindow extends React.Component {
       return;
     }
 
-    console.log('dragend-2');
-
     for (let i = 0; i < selectedSquares.length; i++) {
       for (let j = 0; j < selectedSquares.length; j++) {
-        if (selectedSquares[i][j]) {
-          console.log('ship part placed');
+        if (selectedSquares[i][j].selected) {
+          const selectedSquareCopy = JSON.parse(JSON.stringify(selectedSquares[i][j]));
+          selectedSquareCopy.selected = undefined;
+          selectedSquareCopy.hasShip = true;
           boardCopy[i][j] = {
             fog: false,
             shot: false,
-            noShip: false,
+            ship: selectedSquareCopy,
           };
         }
       }
@@ -262,6 +351,24 @@ class PlacementWindow extends React.Component {
       setState({dragInfo: dragInfoCopy});
     }
   }
+
+  handleTurnEnd(e) {
+    const unplacedShipCountSum = this.props.unplacedShipCount.reduce((a, b) => a + b, 0);
+    // all ships must be placed
+    if (unplacedShipCountSum > 0) return;
+
+    console.log('turn end');
+    console.log(this.props.player);
+
+    // player 1 want to end placement of ships, next is player 2
+    if (this.props.player === 1) {
+      this.props.setState({beginningTurn: 2, gameTurn: 0, showWaitingWindow: true});
+    }
+    // player 2 want to end placement of ships, game starts
+    else if (this.props.player === 2) {
+      this.props.setState({beginningTurn: 0, gameTurn: 1, showWaitingWindow: true});
+    }
+  }
 }
 
 function calculateSelection(board, dragInfo) {
@@ -276,7 +383,31 @@ function calculateSelection(board, dragInfo) {
   const selectedSquares = new Array(board.length).fill(0).map(x => Array(board.length).fill(0));
 
   if (board[y][x].noShip) {
-    selectedSquares[y][x] = true;
+    if (rotation === 0) {
+      selectedSquares[y][x] = {selected: true, shipCenterPartHorizontal: true};
+    } else {
+      selectedSquares[y][x] = {selected: true, shipCenterPartVertical: true};
+    }
+
+    // adjacent square has a ship -> ship cant be placed
+    if (board[y] && board[y][x + 1] && !board[y][x + 1].noShip) {
+      canDrop = false;
+    }
+
+    // adjacent square has a ship -> ship cant be placed
+    if (board[y] && board[y][x - 1] && !board[y][x- 1].noShip) {
+      canDrop = false;
+    }
+
+    // adjacent square has a ship -> ship cant be placed
+    if (board[y + 1] && board[y + 1][x] && !board[y + 1][x].noShip) {
+      canDrop = false;
+    }
+
+    // adjacent square has a ship -> ship cant be placed
+    if (board[y - 1] && board[y - 1][x] && !board[y - 1][x].noShip) {
+      canDrop = false;
+    }
   } else {
     canDrop = false;
   }
@@ -286,7 +417,11 @@ function calculateSelection(board, dragInfo) {
     let i = 1;
     while (dragInfo.shipSize - center + i <= dragInfo.shipSize) {
       if (x + i < board.length && board[y][x + i].noShip) {
-        selectedSquares[y][x + i] = true;
+        if (dragInfo.shipSize - center + i === dragInfo.shipSize) {
+          selectedSquares[y][x + i] = {selected: true, shipRightPart: true};
+        } else {
+          selectedSquares[y][x + i] = {selected: true, shipCenterPartHorizontal: true};
+        }
       } else {
         canDrop = false;
       }
@@ -317,7 +452,11 @@ function calculateSelection(board, dragInfo) {
     i = 1
     while (dragInfo.shipSize - center - i > 0) {
       if (x - i >= 0 && board[y][x - i].noShip) {
-        selectedSquares[y][x - i] = true;
+        if (dragInfo.shipSize - center - i === 1) {
+          selectedSquares[y][x - i] = {selected: true, shipLeftPart: true};
+        } else {
+          selectedSquares[y][x - i] = {selected: true, shipCenterPartHorizontal: true};
+        }
       } else {
         canDrop = false;
       }
@@ -348,7 +487,11 @@ function calculateSelection(board, dragInfo) {
     let i = 1;
     while (dragInfo.shipSize - center + i <= dragInfo.shipSize) {
       if (y + i < board.length && board[y + i][x].noShip) {
-        selectedSquares[y + i][x] = true;
+        if (dragInfo.shipSize - center + i === dragInfo.shipSize) {
+          selectedSquares[y + i][x] = {selected: true, shipBottomPart: true};
+        } else {
+          selectedSquares[y + i][x] = {selected: true, shipCenterPartVertical: true};
+        }
       } else {
         canDrop = false;
       }
@@ -379,7 +522,11 @@ function calculateSelection(board, dragInfo) {
     i = 1
     while (dragInfo.shipSize - center - i > 0) {
       if (y - i >= 0 && board[y - i][x].noShip) {
-        selectedSquares[y - i][x] = true;
+        if (dragInfo.shipSize - center - i === 1) {
+          selectedSquares[y - i][x] = {selected: true, shipTopPart: true};
+        } else {
+          selectedSquares[y - i][x] = {selected: true, shipCenterPartVertical: true};
+        }
       } else {
         canDrop = false;
       }
@@ -407,8 +554,6 @@ function calculateSelection(board, dragInfo) {
       i++;
     }
   }
-
-  console.log(canDrop);
 
   return (
     {

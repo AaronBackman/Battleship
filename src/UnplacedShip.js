@@ -16,51 +16,41 @@ class UnplacedShip extends React.Component {
       case 0:
         // aircraft carrier
         return (
-          <div>
-            <div>{shipCount}</div>
-            <div>aircraft carrier</div>
+          <div className="unplaced-ship">
+            <div>aircraft carriers: {shipCount}</div>
             <div className="aircraft-carrier" onMouseDown={handleDragStart(5, shipType)}></div>
-            <div>size: 5 squares</div>
           </div>
         );
       case 1:
         // battleship
         return (
-          <div>
-            <div>{shipCount}</div>
-            <div>battleship</div>
+          <div className="unplaced-ship">
+            <div>battleship: {shipCount}</div>
             <div className="battleship" onMouseDown={handleDragStart(4, shipType)}></div>
-            <div>size: 4 squares</div>
           </div>
         );
       case 2:
         // cruiser
         return (
-          <div>
-            <div>{shipCount}</div>
-            <div>cruiser</div>
+          <div className="unplaced-ship">
+            <div>cruiser: {shipCount}</div>
             <div className="cruiser" onMouseDown={handleDragStart(3, shipType)}></div>
-            <div>size: 3 squares</div>
           </div>
         );
       case 3:
       // submarine
       return (
-        <div>
-          <div>{shipCount}</div>
-          <div>submarine</div>
+        <div className="unplaced-ship">
+          <div>submarine: {shipCount}</div>
           <div className="submarine" onMouseDown={handleDragStart(3, shipType)}></div>
-          <div>size: 3 squares</div>
         </div>
       );
     case 4:
       // destroyer
       return (
-        <div>
-          <div>{shipCount}</div>
-          <div>destroyer</div>
+        <div className="unplaced-ship">
+          <div>destroyer: {shipCount}</div>
           <div className="destroyer" onMouseDown={handleDragStart(2, shipType)}></div>
-          <div>size: 2 squares</div>
         </div>
       );
     default:
