@@ -158,7 +158,7 @@ class OptionsWindow extends React.Component {
           <div onClick={() => {
             const shipAreaSum = calculateShipSum(this.props.shipCount);
 
-            if (this.props.boardSize * this.props.boardSize < 2 * shipAreaSum) return;
+            if (this.props.boardSize * this.props.boardSize < 2 * shipAreaSum || shipAreaSum === 0) return;
 
             this.props.setState({beginningTurn: 1});
           }}>

@@ -6,6 +6,14 @@
   cursor: pointer;
 }
 
+.square-shot {
+  background-image: url("images/empty-square-onfire.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
 .ship-part-center-horizontal {
   background-image: url("images/ship-center-horizontal.png");
   width: 50px;
@@ -53,6 +61,69 @@
   border: 3px solid black;
   cursor: pointer;
 }
+
+.ship-part-unknown-shot {
+  background-image: url("images/ship-unknown-onfire.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+
+
+
+.ship-part-center-horizontal-shot {
+  background-image: url("images/ship-center-horizontal-onfire.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-center-vertical-shot {
+  background-image: url("images/ship-center-vertical-onfire.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-top-shot {
+  background-image: url("images/ship-top-onfire.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-bottom-shot {
+  background-image: url("images/ship-bottom-onfire.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-left-shot {
+  background-image: url("images/ship-left-onfire.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.ship-part-right-shot {
+  background-image: url("images/ship-right-onfire.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+
+
+
 
 
 
@@ -151,5 +222,21 @@
   width: 50px;
   height: 50px;
   border: 3px solid red;
+  cursor: pointer;
+}
+
+.fireable-square {
+  background-image: url("images/empty-square.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+}
+
+.fireable-square:hover {
+  background-image: url("images/empty-square.png");
+  width: 50px;
+  height: 50px;
+  border: 3px solid orange;
   cursor: pointer;
 }

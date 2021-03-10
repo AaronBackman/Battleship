@@ -1,6 +1,7 @@
 import React from 'react';
 import OptionsWindow from './OptionsWindow.js';
 import PlacementWindow from './PlacementWindow.js';
+import GameWindow from './GameWindow.js';
 
 class Game extends React.Component {
   constructor(props) {
@@ -92,6 +93,38 @@ class Game extends React.Component {
           unplacedShipCount={this.state.unplacedShipCount}
           dragInfo={this.state.dragInfo}
           boardSize={this.state.boardSize}
+        />
+      );
+    }
+
+    // player 1 turn
+    if (this.state.gameTurn === 1 && this.state.beginningTurn === 0) {
+      return (
+        <GameWindow
+          setState={p => this.setState(p)}
+          ownBoard={this.state.player1Board}
+          enemyBoard={this.state.player2Board}
+          ownShips={this.state.player1Ships}
+          enemyShips={this.state.player2Ships}
+          player={1}
+          boardSize={this.state.boardSize}
+          turnOver={this.state.turnOver}
+        />
+      );
+    }
+
+    // player 2 turn
+    if (this.state.gameTurn === 2 && this.state.beginningTurn === 0) {
+      return (
+        <GameWindow
+          setState={p => this.setState(p)}
+          ownBoard={this.state.player2Board}
+          enemyBoard={this.state.player1Board}
+          ownShips={this.state.player2Ships}
+          enemyShips={this.state.player1Ships}
+          player={2}
+          boardSize={this.state.boardSize}
+          turnOver={this.state.turnOver}
         />
       );
     }

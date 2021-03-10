@@ -282,6 +282,10 @@ class PlacementWindow extends React.Component {
       return;
     }
 
+    const newShip = {};
+    newShip.isDestroyed = false;
+    newShip.squares = [];
+
     for (let i = 0; i < selectedSquares.length; i++) {
       for (let j = 0; j < selectedSquares.length; j++) {
         if (selectedSquares[i][j].selected) {
@@ -293,14 +297,20 @@ class PlacementWindow extends React.Component {
             shot: false,
             ship: selectedSquareCopy,
           };
+
+          newShip.squares.push({y: i, x: j});
         }
       }
     }
 
     shipCountClone[+dragInfo.shipType] = +shipCountClone[+dragInfo.shipType] - 1;
 
+    const shipsCopy = JSON.parse(JSON.stringify(this.props.ships));
+    shipsCopy.push(newShip);
+
     if (this.props.player === 1) {
       this.props.setState({
+        player1Ships: shipsCopy,
         player1Board: boardCopy,
         unplacedShipCount: shipCountClone,
         dragInfo: {
@@ -317,6 +327,7 @@ class PlacementWindow extends React.Component {
       });
     } else {
       this.props.setState({
+        player2Ships: shipsCopy,
         player2Board: boardCopy,
         unplacedShipCount: shipCountClone,
         dragInfo: {
