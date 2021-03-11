@@ -1,7 +1,10 @@
 import React from 'react';
 import './Squares.css';
 import './GameWindow.css';
+import Message from './Message.js';
+import './ReadyButton.css';
 
+// handles playing the game after both players have placed their ships
 class GameWindow extends React.Component {
   constructor(props) {
     super(props);
@@ -10,20 +13,41 @@ class GameWindow extends React.Component {
   }
 
   render() {
-    const {setState, ownBoard, enemyBoard, ownShips, enemyShips, player, boardSize, turnOver} = this.props;
-
-    console.log(enemyBoard);
+    const {setState, ownBoard, enemyBoard, ownShips, enemyShips, player, boardSize, turnOver, gameOver, message} = this.props;
 
     return (
       <div className="game-window">
-        <div className="game-info"></div>
+        <div className="game-info">
+          <div className="game-info-player">
+            <div className="info-header">own ships</div>
+            <div className="info-piece">remaining aircraft carriers: {calculateRemainingShips(ownShips, 0)}</div>
+            <div className="info-piece">remaining battleships: {calculateRemainingShips(ownShips, 1)}</div>
+            <div className="info-piece">remaining cruisers: {calculateRemainingShips(ownShips, 2)}</div>
+            <div className="info-piece">remaining submarines: {calculateRemainingShips(ownShips, 3)}</div>
+            <div className="info-piece">remaining destroyers: {calculateRemainingShips(ownShips, 4)}</div>
+            <div className="info-piece">total remaining: {calculateAllRemainingShips(ownShips)}</div>
+          </div>
+          <div className="game-info-player">
+          <div className="info-header">enemy ships</div>
+          <div className="info-piece">remaining aircraft carriers: {calculateRemainingShips(enemyShips, 0)}</div>
+            <div className="info-piece">remaining battleships: {calculateRemainingShips(enemyShips, 1)}</div>
+            <div className="info-piece">remaining cruisers: {calculateRemainingShips(enemyShips, 2)}</div>
+            <div className="info-piece">remaining submarines: {calculateRemainingShips(enemyShips, 3)}</div>
+            <div className="info-piece">remaining destroyers: {calculateRemainingShips(enemyShips, 4)}</div>
+            <div className="info-piece">total remaining: {calculateAllRemainingShips(enemyShips)}</div>
+          </div>
+        </div>
+
+
         <div className="boards">
           <div id="own-board">
             {ownBoard.map((row, y) => {
               return (
                 <div key={y} className="row">
                   {row.map((square, x) => {
+                    // square has been shot
                     if (ownBoard[y][x].shot) {
+                      // square doesnt have a ship
                       if (ownBoard[y][x].ship === undefined) {
                         return <div key={x} data-x={x} data-y={y} className="square-shot"></div>
                       }
@@ -53,7 +77,7 @@ class GameWindow extends React.Component {
                       }
                     }
 
-
+                    // otherwise the same as above but square has not been shot at
                     else {
                       if (!ownBoard[y][x].ship) {
                         return <div key={x} data-x={x} data-y={y} className="square"></div>
@@ -101,7 +125,6 @@ class GameWindow extends React.Component {
 
                       // see enemy ship parts more specifically if and only if it is completely destroyed
                       if (isShipOnSquareDestroyed(enemyShips, x, y)) {
-                        console.log('destroyed');
                         if (enemyBoard[y][x].ship.shipCenterPartHorizontal) {
                           return <div key={x} data-x={x} data-y={y} className="ship-part-center-horizontal-shot"></div>
                         }
@@ -127,15 +150,15 @@ class GameWindow extends React.Component {
                         }
                       }
 
+                      // do not give extra info about the shape of the ship if it is only partially hit
                       else {
                         return <div key={x} data-x={x} data-y={y} className="ship-part-unknown-shot"></div>
                       }
                     }
 
 
+                    // square not shot at, location of enemy ships is unknown unless the square is shot
                     else {
-                      // location of enemy ships is unknown unless the square is shot
-
                       if (turnOver) {
                         // cant fire if turn is over
                         return <div key={x} data-x={x} data-y={y} className="square" onClick={this.handleShooting}></div>
@@ -144,7 +167,8 @@ class GameWindow extends React.Component {
                       }
                     }
                   })}
-                  <NextTurnButton turnOver={turnOver} setState={setState} player={player} />
+                  <NextTurnButton turnOver={turnOver} gameOver={gameOver} setState={setState} player={player} />
+                  <Message message={message} />
                 </div>
               )
             })}
@@ -154,22 +178,30 @@ class GameWindow extends React.Component {
     );
   }
 
+  // player clicks a square on the enemy board
   handleShooting(e) {
     const square = e.target;
 
     const x = square.dataset.x;
     const y = square.dataset.y;
 
-    // player has already shot once on this turn
-    if (this.props.turnOver) return;
+    // player cant shoot anymore (eg. player missed)
+    if (this.props.turnOver) {
+      this.props.setState({message: 'You can\'t shoot anymore!'})
+      return;
+    }
 
     // cant shoot if the square has already been shot at
-    if (this.props.enemyBoard[y][x].shot) return;
+    if (this.props.enemyBoard[y][x].shot)  {
+      this.props.setState({message: 'That square has already been shot at!'})
+      return;
+    }
 
     const enemyBoardCopy = JSON.parse(JSON.stringify(this.props.enemyBoard));
     enemyBoardCopy[y][x].shot = true;
 
     const enemyShipsCopy = JSON.parse(JSON.stringify(this.props.enemyShips));
+    let hitEnemyShip = false;
     let shipIndex = -1;
     // find the ship that was just shot at (if any)
     outerLoop:
@@ -178,21 +210,18 @@ class GameWindow extends React.Component {
         const square = enemyShipsCopy[i].squares[j];
         if (Number(square.x) === Number(x) && Number(square.y) === Number(y)) {
           shipIndex = i;
+          hitEnemyShip = true;
           break outerLoop;
         }
       }
     }
 
+    let shipDestroyed = true;
     // if a ship was shot at, find if it is now destroyed
-    if (shipIndex !== -1) {
-      let shipDestroyed = true;
+    if (hitEnemyShip) {
       const shotShip = enemyShipsCopy[shipIndex];
 
-      console.log(shotShip);
-      console.log(shotShip.isDestroyed);
-
       for (const square of shotShip.squares) {
-        console.log(enemyBoardCopy[square.y][square.x].shot);
         if (!enemyBoardCopy[square.y][square.x].shot) {
           shipDestroyed = false;
           break;
@@ -200,15 +229,70 @@ class GameWindow extends React.Component {
       }
 
       enemyShipsCopy[shipIndex].isDestroyed = shipDestroyed;
-      console.log(enemyShipsCopy[shipIndex].isDestroyed);
+    } else {
+      shipDestroyed = false;
     }
 
-    if (this.props.player === 1) {
-      this.props.setState({player2Board: enemyBoardCopy, player2Ships: enemyShipsCopy, turnOver: true});
-    } else {
-      this.props.setState({player1Board: enemyBoardCopy, player1Ships: enemyShipsCopy, turnOver: true});
+    // this was enemys last ship, you have won the game
+    if (calculateAllRemainingShips(enemyShipsCopy) === 0) {
+      if (this.props.player === 1) {
+        this.props.setState({player2Board: enemyBoardCopy, player2Ships: enemyShipsCopy, turnOver: true, gameOver: true, message: 'Sank the last enemy ship!'});
+      } else {
+        this.props.setState({player1Board: enemyBoardCopy, player1Ships: enemyShipsCopy, turnOver: true, gameOver: true, message: 'Sank the last enemy ship!'});
+      }
+
+      return;
+    }
+
+    // gives a different message if this shot sank an enemy ship
+    if (shipDestroyed) {
+      if (this.props.player === 1) {
+        this.props.setState({player2Board: enemyBoardCopy, player2Ships: enemyShipsCopy, turnOver: false, message: 'Sank an enemy ship!'});
+      } else {
+        this.props.setState({player1Board: enemyBoardCopy, player1Ships: enemyShipsCopy, turnOver: false, message: 'Sank an enemy ship!'});
+      }
+    }
+    else if (hitEnemyShip) {
+      if (this.props.player === 1) {
+        this.props.setState({player2Board: enemyBoardCopy, player2Ships: enemyShipsCopy, turnOver: false, message: 'Hit an enemy ship!'});
+      } else {
+        this.props.setState({player1Board: enemyBoardCopy, player1Ships: enemyShipsCopy, turnOver: false, message: 'Hit an enemy ship!'});
+      }
+    }
+    else {
+      if (this.props.player === 1) {
+        this.props.setState({player2Board: enemyBoardCopy, player2Ships: enemyShipsCopy, turnOver: true, message: 'Missed!'});
+      } else {
+        this.props.setState({player1Board: enemyBoardCopy, player1Ships: enemyShipsCopy, turnOver: true, message: 'Missed!'});
+      }
     }
   }
+}
+
+// calculates remaining ships of a certain type (eg. 5 destroyers)
+function calculateRemainingShips(ships, shipType) {
+  let count = 0;
+
+  for (const ship of ships) {
+    if (ship.shipType === shipType && !ship.isDestroyed) {
+      count++;
+    }
+  }
+
+  return count;
+}
+
+// sum of all remaining ships
+function calculateAllRemainingShips(ships) {
+  let count = 0;
+
+  for (const ship of ships) {
+    if (!ship.isDestroyed) {
+      count++;
+    }
+  }
+
+  return count;
 }
 
 // checks if the ship on square x, y on board is destroyed (all squares fired at)
@@ -230,13 +314,30 @@ function isShipOnSquareDestroyed(ships, x, y) {
     }
   }
 
-  console.log(destroyed);
-
   return destroyed;
 }
 
+// give turn to the other player or end game if won already
 function NextTurnButton(props) {
-  const {turnOver, setState, player} = props;
+  const {turnOver, gameOver, setState, player} = props;
+
+  if (gameOver) {
+    return (
+      <div className="ready-button"
+      onClick={e => {
+        setState({
+          turnOver: false,
+          gameTurn: 0,
+          showGameOverWindow: true,
+          message: '',
+          winner: player,
+        });
+      }}
+    >
+      Ready
+    </div>
+    );
+  }
 
   if (!turnOver) return <></>;
 
@@ -248,6 +349,7 @@ function NextTurnButton(props) {
             turnOver: false,
             gameTurn: 2,
             showWaitingWindow: true,
+            message: '',
           });
 
           return;
@@ -256,6 +358,7 @@ function NextTurnButton(props) {
             turnOver: false,
             gameTurn: 1,
             showWaitingWindow: true,
+            message: '',
           });
 
           return;

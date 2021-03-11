@@ -1,0 +1,14 @@
+.message-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid red;
+  color: white;
+  background-color: black;
+  font-size: large;
+  padding: 20px;
+
+  position: absolute;
+  left: 30%;
+  top: 45%;
+}

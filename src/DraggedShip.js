@@ -1,6 +1,7 @@
 import React from 'react';
 import './DraggedShip.css';
 
+// ship that is currently being dragged by player when placing ships
 class DraggedShip extends React.Component {
   constructor(props) {
     super(props);

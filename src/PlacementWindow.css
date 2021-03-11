@@ -2,7 +2,8 @@
   width: 100%;
   height: 100%;
   background-image: url("images/us-fleet-wallpaper.jpg");
-  background-size: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
 
   display: flex;
   align-items: center;
@@ -19,25 +20,29 @@
   display: flex;
 }
 
-.ready-button {
-  width: 50px;
-  height: 30px;
-  padding: 30px;
-  background-color: cadetblue;
-  font-size: large;
-  cursor: pointer;
-
-  position: absolute;
-  right: 20%;
-  bottom: 0;
-  margin: 50px;
-}
-
 .unplaced-ships-container {
   background-color: black;
   color: white;
 }
 
-.ready-button:hover {
-  background-color: rgb(69, 96, 97);
+.clear-board-button-container {
+  padding: 20px;
+  border: 3px solid red;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.clear-board-button {
+  padding: 20px;
+  font-size: large;
+  background-color: rgb(204, 169, 14);
+  border-radius: 50px;
+  cursor: pointer;
+}
+
+.clear-board-button:hover {
+  background-color: rgb(173, 147, 32);;
 }

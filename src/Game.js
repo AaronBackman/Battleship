@@ -2,14 +2,16 @@ import React from 'react';
 import OptionsWindow from './OptionsWindow.js';
 import PlacementWindow from './PlacementWindow.js';
 import GameWindow from './GameWindow.js';
+import WaitingWindow from './WaitinWindow.js';
+import GameOverWindow from './GameOverWindow.js';
 
+// this component basically co-ordinates switching windows in the application and decides which one is currently shown
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       gameTurn: 0,
       beginningTurn: 0,
-      reset: false,
 
       player1Board: [],
       player2Board: [],
@@ -36,26 +38,70 @@ class Game extends React.Component {
         y: -1,
         boardSquareX: -1,
         boardSquareY: -1,
-      }
+      },
+
+      winner: '',
+      turnOver: false,
+      gameOver: false,
+      message: '',
+      showWaitingWindow: false,
+      showGameOverWindow: false,
     };
   }
 
   componentDidUpdate() {
-    // initializes the boards
+    // initializes the board for player 1
     if (this.state.gameTurn === 0 && this.state.beginningTurn === 1) {
       if (this.state.player1Board.length === 0) {
-        console.log('set board');
         this.setState({player1Board: initGameBoard(this.state.boardSize), unplacedShipCount: this.state.shipCount});
       }
-    } else if (this.state.gameTurn === 0 && this.state.beginningTurn === 2) {
+    }
+    // initializes the board for player 2
+    else if (this.state.gameTurn === 0 && this.state.beginningTurn === 2) {
       if (this.state.player2Board.length === 0) {
-        console.log('set board');
         this.setState({player2Board: initGameBoard(this.state.boardSize), unplacedShipCount: this.state.shipCount});
       }
     }
   }
 
   render() {
+    if (this.state.showWaitingWindow) {
+      let waitedPlayer;
+      if (this.state.beginningTurn === 0) {
+        waitedPlayer = this.state.gameTurn;
+      } else {
+        waitedPlayer = this.state.beginningTurn;
+      }
+
+      let waitedPlayerName;
+      if (waitedPlayer === 1) {
+        waitedPlayerName = this.state.player1Name;
+      } else {
+        waitedPlayerName = this.state.player2Name;
+      }
+
+      return (
+        <WaitingWindow
+          setState={p => this.setState(p)}
+          waitedPlayer={waitedPlayer}
+          waitedPlayerName={waitedPlayerName}
+        />
+      );
+
+    }
+
+    if (this.state.showGameOverWindow) {
+      if (this.state.winner === 1) {
+        return (
+          <GameOverWindow setState={p => this.setState(p)} winnerName={this.state.player1Name} />
+        );
+      } else {
+        return (
+          <GameOverWindow setState={p => this.setState(p)} winnerName={this.state.player2Name} />
+        );
+      }
+    }
+
     // first stage in a new game
     if (this.state.gameTurn === 0 && this.state.beginningTurn === 0) {
       return <OptionsWindow
@@ -64,6 +110,7 @@ class Game extends React.Component {
         player2Name={this.state.player2Name}
         boardSize={this.state.boardSize}
         shipCount={this.state.shipCount}
+        message={this.state.message}
       />
     }
 
@@ -109,6 +156,8 @@ class Game extends React.Component {
           player={1}
           boardSize={this.state.boardSize}
           turnOver={this.state.turnOver}
+          gameOver={this.state.gameOver}
+          message={this.state.message}
         />
       );
     }
@@ -125,12 +174,14 @@ class Game extends React.Component {
           player={2}
           boardSize={this.state.boardSize}
           turnOver={this.state.turnOver}
+          gameOver={this.state.gameOver}
+          message={this.state.message}
         />
       );
     }
 
     return (
-      <div>hello</div>
+      <div>error</div>
     );
   }
 }
@@ -145,6 +196,7 @@ function initGameBoard(boardSize) {
     for (let j = 0; j < boardSize; j++) {
       board[i].push(
         {
+          // fog has not been implemented yet (not required)
           fog: false,
           shot: false,
           noShip: true,
@@ -152,9 +204,6 @@ function initGameBoard(boardSize) {
       )
     }
   }
-
-  console.log('init');
-  console.log(board);
 
   return board;
 }

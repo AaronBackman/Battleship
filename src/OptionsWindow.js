@@ -1,12 +1,15 @@
 import React from 'react';
 import './OptionsWindow.css';
 
+import Message from './Message.js';
+
+// the initial window show to players, used to select options such as board size and amount of ships
 class OptionsWindow extends React.Component {
   render() {
     const setState = this.props.setState;
 
     return (
-      <div className="root">
+      <div className="options-window">
         <div className="row">
           <div className="player-names-container">
 
@@ -32,8 +35,8 @@ class OptionsWindow extends React.Component {
 
           </div>
         </div>
-
         <div className="board-size-container">
+          <div className="board-size-header">Board Size</div>
           <div className="board-size-display">
             <div className="board-size-number">{this.props.boardSize}</div>
             <div>X</div>
@@ -44,7 +47,7 @@ class OptionsWindow extends React.Component {
             <div className="board-size-up"
               onClick={() => {
                 if (this.props.boardSize === 10) return;
-                setState({boardSize: this.props.boardSize + 1});
+                setState({boardSize: this.props.boardSize + 1, message: ''});
               }}
             >
               Increase
@@ -52,7 +55,7 @@ class OptionsWindow extends React.Component {
             <div className="board-size-down"
               onClick={(e) => {
                 if (this.props.boardSize === 5) return;
-                setState({boardSize: this.props.boardSize - 1});
+                setState({boardSize: this.props.boardSize - 1, message: ''});
               }}
             >
               Decrease
@@ -75,7 +78,7 @@ class OptionsWindow extends React.Component {
                 const copyArr = JSON.parse(JSON.stringify(this.props.shipCount));
                 copyArr[0] = newValue;
 
-                setState({shipCount: copyArr});
+                setState({shipCount: copyArr, message: ''});
               }}
             />
           </div>
@@ -93,7 +96,7 @@ class OptionsWindow extends React.Component {
                 const copyArr = JSON.parse(JSON.stringify(this.props.shipCount));
                 copyArr[1] = newValue;
 
-                setState({shipCount: copyArr});
+                setState({shipCount: copyArr, message: ''});
               }}
             />
           </div>
@@ -111,7 +114,7 @@ class OptionsWindow extends React.Component {
                 const copyArr = JSON.parse(JSON.stringify(this.props.shipCount));
                 copyArr[2] = newValue;
 
-                setState({shipCount: copyArr});
+                setState({shipCount: copyArr, message: ''});
               }}
             />
           </div>
@@ -129,7 +132,7 @@ class OptionsWindow extends React.Component {
                 const copyArr = JSON.parse(JSON.stringify(this.props.shipCount));
                 copyArr[3] = newValue;
 
-                setState({shipCount: copyArr});
+                setState({shipCount: copyArr, message: ''});
               }}
             />
           </div>
@@ -147,7 +150,7 @@ class OptionsWindow extends React.Component {
                 const copyArr = JSON.parse(JSON.stringify(this.props.shipCount));
                 copyArr[4] = newValue;
 
-                setState({shipCount: copyArr});
+                setState({shipCount: copyArr, message: ''});
               }}
             />
           </div>
@@ -155,19 +158,28 @@ class OptionsWindow extends React.Component {
         </div>
 
         <div className="confirm-container">
-          <div onClick={() => {
-            const shipAreaSum = calculateShipSum(this.props.shipCount);
+          <div className="confirm-button">
+            <div onClick={() => {
+              const shipAreaSum = calculateShipSum(this.props.shipCount);
 
-            if (this.props.boardSize * this.props.boardSize < 2 * shipAreaSum || shipAreaSum === 0) return;
+              if (this.props.boardSize * this.props.boardSize < 2 * shipAreaSum) {
+                this.props.setState({message: 'Ships can\'t fit the board!'});
+                return;
+              }
 
-            this.props.setState({beginningTurn: 1});
-          }}>
-            Confirm
+              if (shipAreaSum === 0) {
+                this.props.setState({message: 'You need at leat 1 ship!'});
+                return;
+              }
+
+              this.props.setState({beginningTurn: 1});
+            }}>
+              Confirm
+            </div>
           </div>
-
-          <div>{calculateShipSum(this.props.shipCount)}</div>
+          {this.props.message &&
+          <Message message={this.props.message} />}
         </div>
-
       </div>
     );
   }

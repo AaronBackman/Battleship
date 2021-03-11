@@ -1,0 +1,42 @@
+.waiting-window {
+  width: 100%;
+  height: 100%;
+  background-image: url("images/hochseeflotte-wallpaper.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 20px;
+  border: 5px solid red;
+  background-color: black;
+}
+
+.button-message {
+  font-size: large;
+  background-color: rgb(204, 169, 14);
+  padding: 10px;
+  border-radius: 50px;
+}
+
+.button {
+  font-size: large;
+  background-color: rgb(204, 169, 14);;
+  padding: 10px;
+  margin: 30px;
+  cursor: pointer;
+  border-radius: 50px
+}
+
+.button:hover {
+  background-color: rgb(173, 147, 32);;
+}

@@ -5,6 +5,7 @@ import DraggedShip from './DraggedShip.js';
 
 import './PlacementWindow.css';
 import './Squares.css';
+import './ReadyButton.css';
 
 const shipSquareWidth = 50; // pixels
 const shipSquareHeight = 40; // pixels
@@ -13,6 +14,7 @@ const boardSquareSize = 56; // pixels
 let selectedSquares;
 let canBeDropped = false;
 
+// this window handles the ship placement for 1 player (but can be used for both players)
 class PlacementWindow extends React.Component {
   constructor(props) {
     super(props);;
@@ -32,8 +34,8 @@ class PlacementWindow extends React.Component {
     document.addEventListener('mouseup', this.handleDragEnd);
     document.addEventListener('keydown', this.handleRotation);
     document.addEventListener('mousemove', this.handleDragMove)
-    document.addEventListener('mousedown', e => e.preventDefault());
 
+    // drag is on and is over a square on the board
     if (dragInfo.isDragged && dragInfo.boardSquareX !== -1 && dragInfo.boardSquareY !== -1) {
       const selectionObj = calculateSelection(board, dragInfo);
       selectedSquares = selectionObj.selectedSquares;
@@ -44,15 +46,18 @@ class PlacementWindow extends React.Component {
     }
 
     return (
-      <div className="placement-window">
+      <div className="placement-window" onMouseDown={e => e.preventDefault()}>
         <div id="board">
           {board.map((row, y) => {
             return (<div key={y} className="row">{
               row.map((square, x) => {
+                // empty square that is not selected
                 if (!board[y][x].ship && !selectedSquares[y][x].selected) {
                   return <div key={x} data-x={x} data-y={y} className="square" onMouseOver={this.handleDragOver} onMouseLeave={this.handleDragLeave}></div>
                 }
+                // empty square that is selected
                 else if (selectedSquares[y][x].selected) {
+                  // dragged ship can be dropped at where it is now, green borders
                   if (canBeDropped) {
                     if (selectedSquares[y][x].shipCenterPartHorizontal) {
                       return (
@@ -85,6 +90,7 @@ class PlacementWindow extends React.Component {
                       );
                     }
                   }
+                  // dragged ship cannot be dropped at where it is now, red borders
                   else {
                     if (selectedSquares[y][x].shipCenterPartHorizontal) {
                       return (
@@ -119,6 +125,7 @@ class PlacementWindow extends React.Component {
                   }
                 }
                 
+                // a ship that has already been placed on the board (ie. not dragged right now)
                 else if (board[y][x].ship.hasShip) {
                   if (board[y][x].ship.shipCenterPartHorizontal) {
                     return (
@@ -158,13 +165,38 @@ class PlacementWindow extends React.Component {
 
         <div className="unplaced-ships-container">
           {this.props.unplacedShipCount.map((shipCount, index) => <UnplacedShip key={index} shipCount={shipCount} shipType={index} setState={p => this.props.setState(p)} />)}
+          <div className="clear-board-button-container" onClick={e => {
+            // clears the board
+
+            
+            if (this.props.player === 1) {
+              this.props.setState({
+                player1Board: [],
+                player1Ships: [],
+                unplacedShipCount: [],
+              });
+            } else {
+              this.props.setState({
+                player2Board: [],
+                player2Ships: [],
+                unplacedShipCount: [],
+              });
+            }
+          }}>
+            <div className="clear-board-button">Clear board</div>
+          </div>
         </div>
         <DraggedShip dragInfo={dragInfo} setState={p => this.props.setState(p)} />
-        <div className="ready-button" onClick={this.handleTurnEnd}>Ready</div>
+        {
+          // show ready button only if all ships have been placed
+          this.props.unplacedShipCount.reduce((a, b) => a + b, 0) === 0 &&
+          <div className="ready-button" onClick={this.handleTurnEnd}>Ready</div>
+        }
       </div>
     );
   }
 
+  // player moves the dragged ship (outside of the board)
   handleDragMove(e) {
     const dragInfo = this.props.dragInfo;
     const setState = this.props.setState;
@@ -209,6 +241,7 @@ class PlacementWindow extends React.Component {
     setState({dragInfo: dragInfoCopy});
   }
 
+  // player drags and leaves the board
   handleDragLeave(e) {
     e.preventDefault();
     const dragInfo = this.props.dragInfo;
@@ -227,6 +260,7 @@ class PlacementWindow extends React.Component {
     this.props.setState({dragInfo: dragInfoCopy});
   }
 
+  // player drags and enters a square
   handleDragOver(e) {
     e.preventDefault();
     const dragInfo = this.props.dragInfo;
@@ -253,6 +287,7 @@ class PlacementWindow extends React.Component {
     });
   }
 
+  // player has been dragging a ship and now stops dragging
   handleDragEnd(e) {
     e.preventDefault();
     const dragInfo = this.props.dragInfo;
@@ -285,6 +320,7 @@ class PlacementWindow extends React.Component {
     const newShip = {};
     newShip.isDestroyed = false;
     newShip.squares = [];
+    newShip.shipType = dragInfo.shipType;
 
     for (let i = 0; i < selectedSquares.length; i++) {
       for (let j = 0; j < selectedSquares.length; j++) {
@@ -345,6 +381,7 @@ class PlacementWindow extends React.Component {
     }
   }
 
+  // player presses r to rotate the dragged ship
   handleRotation(e) {
     const dragInfo = this.props.dragInfo;
     const setState = this.props.setState;
@@ -363,14 +400,8 @@ class PlacementWindow extends React.Component {
     }
   }
 
+  // player has finished placing their ships
   handleTurnEnd(e) {
-    const unplacedShipCountSum = this.props.unplacedShipCount.reduce((a, b) => a + b, 0);
-    // all ships must be placed
-    if (unplacedShipCountSum > 0) return;
-
-    console.log('turn end');
-    console.log(this.props.player);
-
     // player 1 want to end placement of ships, next is player 2
     if (this.props.player === 1) {
       this.props.setState({beginningTurn: 2, gameTurn: 0, showWaitingWindow: true});
@@ -382,6 +413,9 @@ class PlacementWindow extends React.Component {
   }
 }
 
+
+// player is dragging a ship at some point in the board
+// this function calculates the squares on the board the ship would be placed to and if the placement can be done
 function calculateSelection(board, dragInfo) {
   const x = Number(dragInfo.boardSquareX);
   const y = Number(dragInfo.boardSquareY);

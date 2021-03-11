@@ -1,0 +1,44 @@
+.game-window {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 100%;
+
+  background-image: url("images/uss-iowa-wallpaper.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.game-info {
+  display: flex;
+
+  padding: 20px;
+  border: 5px solid red;
+  background-color: black;
+  color: white;
+
+  justify-content: space-around;
+}
+
+.info-header {
+  font-size: 25px;
+  padding: 10px;
+  border-bottom: 5px solid green;
+}
+
+.game-info-player {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+.boards {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+
+  flex-grow: 1;
+}

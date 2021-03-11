@@ -1,7 +1,7 @@
 .aircraft-carrier-dragged {
   width: 250px;
   height: 40px;
-  background-color: brown;
+  background-color: gray;
   opacity: 0.5;
   cursor: pointer;
 
@@ -11,7 +11,7 @@
 .battleship-dragged {
   width: 200px;
   height: 40px;
-  background-color: brown;
+  background-color: gray;
   opacity: 0.5;
   cursor: pointer;
 
@@ -22,7 +22,7 @@
 .cruiser-dragged {
   width: 150px;
   height: 40px;
-  background-color: brown;
+  background-color: gray;
   opacity: 0.5;
   cursor: pointer;
 
@@ -33,7 +33,7 @@
 .submarine-dragged {
   width: 150px;
   height: 40px;
-  background-color: brown;
+  background-color: gray;
   opacity: 0.5;
   cursor: pointer;
 
@@ -44,7 +44,7 @@
 .destroyer-dragged {
   width: 100px;
   height: 40px;
-  background-color: brown;
+  background-color: gray;
   opacity: 0.5;
   cursor: pointer;
 

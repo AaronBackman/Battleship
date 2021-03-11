@@ -4,6 +4,7 @@ import './UnplacedShip.css';
 const shipSquareWidth = 40; // pixels
 const shipSquareHeight = 30; // pixels
 
+// represents ships that havent been placed on the board and can be dragged there
 class UnplacedShip extends React.Component {
   constructor(props) {
     super(props);
@@ -25,7 +26,7 @@ class UnplacedShip extends React.Component {
         // battleship
         return (
           <div className="unplaced-ship">
-            <div>battleship: {shipCount}</div>
+            <div>battleships: {shipCount}</div>
             <div className="battleship" onMouseDown={handleDragStart(4, shipType)}></div>
           </div>
         );
@@ -33,7 +34,7 @@ class UnplacedShip extends React.Component {
         // cruiser
         return (
           <div className="unplaced-ship">
-            <div>cruiser: {shipCount}</div>
+            <div>cruisers: {shipCount}</div>
             <div className="cruiser" onMouseDown={handleDragStart(3, shipType)}></div>
           </div>
         );
@@ -41,7 +42,7 @@ class UnplacedShip extends React.Component {
       // submarine
       return (
         <div className="unplaced-ship">
-          <div>submarine: {shipCount}</div>
+          <div>submarines: {shipCount}</div>
           <div className="submarine" onMouseDown={handleDragStart(3, shipType)}></div>
         </div>
       );
@@ -49,7 +50,7 @@ class UnplacedShip extends React.Component {
       // destroyer
       return (
         <div className="unplaced-ship">
-          <div>destroyer: {shipCount}</div>
+          <div>destroyers: {shipCount}</div>
           <div className="destroyer" onMouseDown={handleDragStart(2, shipType)}></div>
         </div>
       );
@@ -58,15 +59,13 @@ class UnplacedShip extends React.Component {
       return <div></div>;
     }
 
+    // player starts drag and drop of a ship
     function handleDragStart(shipSize, shipType) {
       return function(e) {
         if (shipCount === 0) {
           e.preventDefault();
           return;
         }
-
-        console.log('drag start');
-        console.log(shipSize);
 
         setState({
           dragInfo: {

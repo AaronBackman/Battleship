@@ -1,0 +1,42 @@
+.game-over-window {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  background-image: url("images/titanic-sinking-wallpaper.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.game-over-selection-container {
+  background-color: black;
+  border: 5px solid red;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.winner-info {
+  background-color: rgb(204, 169, 14);
+  padding: 10px;
+  border-radius: 50px;
+  font-size: large;
+}
+
+.restart-button {
+  font-size: large;
+  background-color: rgb(204, 169, 14);
+  padding: 10px;
+  margin: 30px;
+  cursor: pointer;
+  border-radius: 50px
+}
+
+.restart-button:hover {
+  background-color: rgb(173, 147, 32);;
+}
