@@ -9,6 +9,7 @@
   background-image: url("images/uss-iowa-wallpaper.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
 }
 
 .game-info {

@@ -4,6 +4,7 @@
   background-image: url("images/hochseeflotte-wallpaper.jpg");
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
 
   display: flex;
   align-items: center;
