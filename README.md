@@ -1,10 +1,11 @@
-# Laivanupotus
-## vaatimukset:
-testattu toimivaksi npm versiolla 7.6.1 ja node versiolla 15.11.0 
-(vanhemmat versiot toimivat todennäköisesti myös, mutta se ei ole varmaa) linuxilla (toimii todennäköisesti myös windowsilla ja OSX:llä)
+# Battleship
+## Requirements:
+tested to work on npm version 7.6.1 and node version 15.11.0 
+(older versions will most likely also work).  
+This application is designed to work on Chrome browser. Other browsers are not supported.
 
-## asentaminen:
+## Running:
 npm install
 npm start
 
-avaa selaimella osoite http://localhost:3000
+open address on browser http://localhost:3000
